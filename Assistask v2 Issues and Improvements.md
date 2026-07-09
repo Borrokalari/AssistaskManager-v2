@@ -9,4 +9,5 @@ Assistask v2 Issues and Improvements
 - [x] Double click on desktop icons tries to open the window and closes it. Possibly because it's already minimized to task bar. Double clicking the desktop icon should bring back Assistask
 - [x] could we encode the list into something smaller and decode it when importing?
 - [x] Minimize and Close buttons needed (minimize to startbar, close to taskbar)
+- [x] Create new list, saveguard on existing ones
 
