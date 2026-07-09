@@ -44,5 +44,14 @@ export function useSnapshots() {
     setSnapshots(next);
   }, [snapshots]);
 
-  return { snapshots, loading, save, remove };
+  const updateSnapshot = useCallback(async (id: string, code: string) => {
+    const store = await getStore();
+    const next = snapshots.map((s) =>
+      s.id === id ? { ...s, code, savedAt: Date.now() } : s
+    );
+    await store.set(STORE_KEY, next);
+    setSnapshots(next);
+  }, [snapshots]);
+
+  return { snapshots, loading, save, remove, updateSnapshot };
 }

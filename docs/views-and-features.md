@@ -95,10 +95,18 @@ Browse all named list snapshots you have saved. Access it from the **☰** menu.
 
 Each entry shows the snapshot name and the date it was saved. From here you can:
 
+- **Save** — update this snapshot with your current active tasks. Disabled when the snapshot already matches your current tasks (nothing to save).
 - **Restore** — load the snapshot's tasks into Assistask. If you have existing tasks, you'll be prompted to choose:
   - **Replace** — discard current tasks and load the snapshot
   - **Append** — keep current tasks and merge in the snapshot's tasks. Tasks marked done locally that are active in the snapshot are restored to active.
 - **Delete** — permanently remove the snapshot (your current tasks are not affected)
+
+### Starting a new list
+
+The **+ List** button (top right of My Lists) clears your current active tasks and takes you to a fresh empty list, ready to fill and save under a new name.
+
+- The button is **disabled** until you have at least one saved snapshot — so your work is never lost by accident.
+- If your current active tasks haven't been saved to any snapshot yet, Assistask will warn you before proceeding. Choose **Continue** to discard and start fresh, or **Cancel** to go back and save first.
 
 Snapshots are saved to disk and survive restarts, reboots, and WebView cache clears.
 

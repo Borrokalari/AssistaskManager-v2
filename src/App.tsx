@@ -688,7 +688,7 @@ export default function App() {
         {view === "standup" && <StandupView />}
         {view === "completed" && <CompletedView />}
         {view === "settings" && <SettingsView onNavigate={setView} />}
-        {view === "lists" && <SnapshotsView />}
+        {view === "lists" && <SnapshotsView onNavigate={setView} />}
         {view === "about" && <AboutView />}
       </div>
 
