@@ -14,6 +14,7 @@ export interface Settings {
   isVu: boolean;
   notificationsEnabled: boolean;
   repeatNotifHours: number;
+  dismissedUpdateVersion: string;
 }
 
 interface SettingsStore extends Settings {
@@ -35,6 +36,7 @@ export const useSettingsStore = create<SettingsStore>()(
       isVu: false,
       notificationsEnabled: true,
       repeatNotifHours: 1,
+      dismissedUpdateVersion: "",
       update: (updates) => set((s) => ({ ...s, ...updates })),
     }),
     {

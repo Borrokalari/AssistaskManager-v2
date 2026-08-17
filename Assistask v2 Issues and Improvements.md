@@ -10,4 +10,6 @@ Assistask v2 Issues and Improvements
 - [x] could we encode the list into something smaller and decode it when importing?
 - [x] Minimize and Close buttons needed (minimize to startbar, close to taskbar)
 - [x] Create new list, saveguard on existing ones
+- [x] Latest version check with link to open browser to latticeworks and ignore button
+- [x] Add Created: date, time on a task either when clicking on them or via context menu?
 

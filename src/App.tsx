@@ -1,10 +1,12 @@
 import { useState, useRef, useEffect, KeyboardEvent } from "react";
+import { invoke } from "@tauri-apps/api/core";
 import { getCurrentWebviewWindow } from "@tauri-apps/api/webviewWindow";
 import { useTaskStore, Priority, Task } from "./store";
 import { useNotifications } from "./useNotifications";
 import { parseTask, formatDetectedDate } from "./parseTask";
 import { useSettingsStore, formatInZone, LOCAL_ZONE } from "./settingsStore";
 import { useWindowPersistence } from "./useWindowPersistence";
+import { useUpdateCheck } from "./useUpdateCheck";
 import PixelText from "./PixelText";
 import SlideMenu from "./SlideMenu";
 import StandupView from "./views/StandupView";
@@ -50,6 +52,13 @@ function toDatetimeLocal(ts: number): string {
   const d = new Date(ts);
   const pad = (n: number) => String(n).padStart(2, "0");
   return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+}
+
+function formatCreated(ts: number): string {
+  const d = new Date(ts);
+  const date = d.toLocaleDateString([], { month: "short", day: "numeric", year: "numeric" });
+  const time = d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+  return `Created: ${date}, ${time}`;
 }
 
 interface TaskRowProps {
@@ -151,6 +160,7 @@ function TaskRow({ task, isEditing, onStartEdit, onStopEdit, draggable: isDragga
   return (
     <div
       data-task-id={isDraggable ? task.id : undefined}
+      title={formatCreated(task.createdAt)}
       className={`relative group flex items-start gap-2 px-3 py-2 border-b border-vscode-border hover:bg-vscode-panel transition-colors cursor-pointer border-l-2 ${
         task.done
           ? "opacity-40 border-l-transparent"
@@ -622,6 +632,7 @@ function TasksView() {
 export default function App() {
   useNotifications();
   useWindowPersistence();
+  const { updateInfo, dismiss: dismissUpdate } = useUpdateCheck();
 
   const { tasks, hideDone } = useTaskStore();
   const [view, setView] = useState<View>("tasks");
@@ -681,6 +692,28 @@ export default function App() {
           </div>
         </div>
       </div>
+
+      {/* Update available banner */}
+      {updateInfo && (
+        <div className="flex items-center gap-2 px-3 py-1.5 border-b border-vscode-border bg-vscode-panel text-xs flex-shrink-0">
+          <span className="text-vscode-accent">⬆</span>
+          <span className="text-vscode-text">Update available: v{updateInfo.version}</span>
+          <div className="ml-auto flex items-center gap-3">
+            <button
+              onClick={() => invoke("open_url", { url: updateInfo.downloadUrl })}
+              className="text-vscode-accent hover:underline transition-colors"
+            >
+              Download
+            </button>
+            <button
+              onClick={dismissUpdate}
+              className="text-vscode-muted hover:text-vscode-text transition-colors"
+            >
+              Ignore
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Main content */}
       <div className="flex-1 flex flex-col overflow-hidden">
